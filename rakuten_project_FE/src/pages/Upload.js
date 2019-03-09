@@ -18,6 +18,7 @@ import { withStyles } from '@material-ui/core/styles';
 import withRoot from '../withRoot';
 import axios from 'axios';
 import Search from './Search';
+import Result from './Result';
 
 const endpoint = '/upload';
 
@@ -54,6 +55,7 @@ class Index extends React.Component {
     data:[],
     filterdData:[],
     fileUploaded: true,
+    hasResults: true,
   };
 
   handleOnError = (error) => {
@@ -152,20 +154,22 @@ class Index extends React.Component {
                   alignItems={"center"}
             >
               <Grid item>
-                <Button
-                  containerElement='label'
-                  label='My Label'>
-                  <input
-                    variant="contained"
-                    component="span"
-                    accept="*.csv"
-                    id="contained-button-file"
-                    multiple={false}
-                    className={classes.button}
-                    type="file"
-                    onChange={this.handleSelectedFile}
-                  />
-                </Button>
+                <input
+                  style={{ display: 'none' }}
+                  variant="contained"
+                  component="span"
+                  accept="*.csv"
+                  id="contained-button-file"
+                  multiple={false}
+                  className={classes.button}
+                  type="file"
+                  onChange={this.handleSelectedFile}
+                />
+                <label htmlFor="contained-button-file">
+                  <Button variant="outlined" color="primary" component="span" className={classes.button}>
+                    Choose file
+                  </Button>
+                </label>
               </Grid>
             </Grid>
             <Grid xs={12}
@@ -185,6 +189,9 @@ class Index extends React.Component {
         </div>
         {
           this.state.fileUploaded ? <Search /> : null
+        }
+        {
+          this.state.hasResults ? <Result /> : null
         }
       </div>
     );
