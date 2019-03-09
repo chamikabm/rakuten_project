@@ -14,7 +14,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
-import { DropzoneArea } from 'material-ui-dropzone'
 import { withStyles } from '@material-ui/core/styles';
 import withRoot from '../withRoot';
 import axios from 'axios';
@@ -25,9 +24,6 @@ const endpoint = '/upload';
 const styles = theme => ({
   root: {
     flexGrow: 1,
-  },
-  container: {
-    display: 'flex',
   },
   input: {
     display: 'none',
@@ -137,28 +133,31 @@ class Index extends React.Component {
             </Toolbar>
           </AppBar>
         </div>
-
-        <div className={classes.container}>
-          <Grid container spacing={24}
+        <div>
+          <Grid container
+                direction="column"
+                justify="center"
+                alignItems="stretch"
           >
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Typography variant="h5" gutterBottom>
                   File to Upload:
                 </Typography>
-                <DropzoneArea
-                  acceptedFiles={['application/csv']}
-                  filesLimit={1}
-                  onChange={this.handleselectedFile.bind(this)}
-                />
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={6} alignItems={"center"} justify={"center"}>
-              <Button color={"primary"} variant="contained" className={classes.button} onClick={this.handleUpload}>
-                Upload
-                <CloudUpload className={classes.rightIcon} />
-                &nbsp;{Math.round(this.state.loaded, 2)} %
-              </Button>
+            <Grid xs={12}
+                  container
+                  justify="center"
+                  alignItems={"center"}
+            >
+              <Grid item>
+                <Button color={"primary"} variant="contained" className={classes.button} onClick={this.handleUpload}>
+                  Upload
+                  <CloudUpload className={classes.rightIcon} />
+                  &nbsp;{Math.round(this.state.loaded, 2)} %
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
         </div>
