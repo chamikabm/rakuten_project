@@ -71,7 +71,7 @@ class Index extends React.Component {
     this.setState(newState)
   };
 
-  handleselectedFile = event => {
+  handleSelectedFile = event => {
 
     let newState = Object.assign({}, this.state);
     newState.selectedFile = event.target.files[0];
@@ -110,7 +110,7 @@ class Index extends React.Component {
     return (
       <div className={classes.root}>
         <Dialog open={open} onClose={this.handleClose}>
-          <DialogTitle>Error Occured During</DialogTitle>
+          <DialogTitle>Error Occurred During</DialogTitle>
           <DialogContent>
             <DialogContentText>errorMessage</DialogContentText>
           </DialogContent>
@@ -152,10 +152,32 @@ class Index extends React.Component {
                   alignItems={"center"}
             >
               <Grid item>
+                <Button
+                  containerElement='label'
+                  label='My Label'>
+                  <input
+                    variant="contained"
+                    component="span"
+                    accept="*.csv"
+                    id="contained-button-file"
+                    multiple={false}
+                    className={classes.button}
+                    type="file"
+                    onChange={this.handleSelectedFile}
+                  />
+                </Button>
+              </Grid>
+            </Grid>
+            <Grid xs={12}
+                  container
+                  justify="center"
+                  alignItems={"center"}
+            >
+              <Grid item>
                 <Button color={"primary"} variant="contained" className={classes.button} onClick={this.handleUpload}>
                   Upload
                   <CloudUpload className={classes.rightIcon} />
-                  &nbsp;{Math.round(this.state.loaded, 2)} %
+                  &nbsp;&nbsp;{Math.round(this.state.loaded, 2)} %
                 </Button>
               </Grid>
             </Grid>

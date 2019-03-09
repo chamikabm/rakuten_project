@@ -20,6 +20,9 @@ const styles = theme => ({
   searchGrid: {
     marginTop: theme.spacing.unit * 2,
   },
+  button: {
+    margin: theme.spacing.unit,
+  },
 });
 
 class Index extends React.Component {
@@ -68,7 +71,7 @@ class Index extends React.Component {
               <Grid item>
                 <Button color={"primary"} variant="contained" className={classes.button} onClick={this.handleUpload}>
                   Search
-                  <Search className={classes.rightIcon} />
+                  &nbsp;<Search className={classes.rightIcon} />
                 </Button>
               </Grid>
             </Grid>
