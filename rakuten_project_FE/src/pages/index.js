@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,26 +7,45 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
+import CloudUpload from '@material-ui/icons/CloudUpload';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
+import { DropzoneArea } from 'material-ui-dropzone'
 import { withStyles } from '@material-ui/core/styles';
 import withRoot from '../withRoot';
-import axios from 'axios'
+import axios from 'axios';
+import Search from './Search';
 
-
-const endpoint = '/upload'
+const endpoint = '/upload';
 
 const styles = theme => ({
   root: {
-    textAlign: 'center',
-    paddingTop: theme.spacing.unit * 20,
+    flexGrow: 1,
+  },
+  container: {
+    display: 'flex',
   },
   input: {
-      display: 'none',
+    display: 'none',
   },
   paper: {
     padding: theme.spacing.unit * 2,
     textAlign: 'center',
     color: theme.palette.text.secondary,
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  menuButton: {
+    marginLeft: -18,
+    marginRight: 10,
   },
 });
 
@@ -38,7 +56,8 @@ class Index extends React.Component {
     loaded: 0,
     errorMessage: "",
     data:[],
-    filterdData:[]
+    filterdData:[],
+    fileUploaded: true,
   };
 
   handleOnError = (error) => {
@@ -46,32 +65,32 @@ class Index extends React.Component {
     newState.errorMessage = error;
     newState.open =true;
     this.setState(newState)
-  }
+  };
 
   handleClose = () => {
     let newState = Object.assign({}, this.state);
     newState.open= false;
-    newState.loaded = 0
-    newState.selectedFile= null
+    newState.loaded = 0;
+    newState.selectedFile= null;
     this.setState(newState)
   };
 
   handleselectedFile = event => {
 
     let newState = Object.assign({}, this.state);
-    newState.selectedFile = event.target.files[0]
+    newState.selectedFile = event.target.files[0];
     this.setState(newState)
-  }
+  };
 
   handleOnProgress = ProgressEvent => {
     let newState = Object.assign({}, this.state);
     newState.loaded = (ProgressEvent.loaded / ProgressEvent.total) * 100;
     this.setState(newState);
-  }
+  };
 
   handleUpload = () => {
     if (this.state.selectedFile) {
-      const data = new FormData()
+      const data = new FormData();
       data.append('file', this.state.selectedFile, this.state.selectedFile.name);
       axios
         .post(endpoint, data, {
@@ -81,7 +100,8 @@ class Index extends React.Component {
           console.log(res.statusText)
         }).catch(this.handleOnError)
     }
-    }
+  };
+
   handleClick = () => {
     let newState = Object.assign({}, this.state);
     newState.open = true;
@@ -104,52 +124,47 @@ class Index extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-        <Grid
-          container
-          spacing={24}
-        >
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <table>
-              <tbody>
-              <tr>
-                <td>
-                  <Typography variant="subtitle1" gutterBottom>
-                   File to Upload:
-                  </Typography>
-                </td>
-                <td>
-                <Button
-                  containerElement='label'
-                  label='My Label'>
-                  <input
-                        variant="contained"
-                        component="span"
-                        accept="*.csv"
-                        id="contained-button-file"
-                        multiple={false}
-                        className={classes.button}
-                        type="file"
-                        onChange={this.handleselectedFile}
-                  />
-                </Button>
-                </td>
-              <td>
-                <div>
-                  <Button color="primary" onClick={this.handleUpload} >Submit
-                </Button>
-              {Math.round(this.state.loaded, 2)} %</div>
-          </td>
-          </tr>
-        </tbody>
-            </table>
 
-        </Paper>
-        </Grid>
+        <div>
+          <AppBar position="static">
+            <Toolbar variant="dense">
+              <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit">
+                My Shops
+              </Typography>
+            </Toolbar>
+          </AppBar>
+        </div>
 
-        </Grid>
-
-
+        <div className={classes.container}>
+          <Grid container spacing={24}
+          >
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography variant="h5" gutterBottom>
+                  File to Upload:
+                </Typography>
+                <DropzoneArea
+                  acceptedFiles={['application/csv']}
+                  filesLimit={1}
+                  onChange={this.handleselectedFile.bind(this)}
+                />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} alignItems={"center"} justify={"center"}>
+              <Button color={"primary"} variant="contained" className={classes.button} onClick={this.handleUpload}>
+                Upload
+                <CloudUpload className={classes.rightIcon} />
+                &nbsp;{Math.round(this.state.loaded, 2)} %
+              </Button>
+            </Grid>
+          </Grid>
+        </div>
+        {
+          this.state.fileUploaded ? <Search /> : null
+        }
       </div>
     );
   }
