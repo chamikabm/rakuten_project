@@ -3,11 +3,16 @@
   "version": "3.2.2",
   "private": true,
   "dependencies": {
+    "@date-io/moment": "^1.1.0",
     "@material-ui/core": "latest",
+    "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
+    "material-ui-pickers": "^2.2.4",
+    "moment": "^2.24.0",
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "react-dropzone": "^10.0.0",
     "react-scripts": "latest"
   },
   "scripts": {
