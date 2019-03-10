@@ -16,6 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import withRoot from '../withRoot';
+import moment from 'moment';
 import axios from 'axios';
 import Search from './Search';
 import Result from './Result';
@@ -53,15 +54,33 @@ class Index extends React.Component {
     loaded: 0,
     errorMessage: "",
     data:[],
-    filterdData:[],
+    filteredData:[],
     fileUploaded: true,
-    hasResults: true,
+    hasResults: false,
+  };
+
+  handleOnFilter = (selectedDate) => {
+    const currentList = this.state.data;
+    let filteredData = [];
+    if(selectedDate) {
+      const currentDateStamp = selectedDate.format("YYYYMMDD");
+      console.log(currentDateStamp);
+      filteredData =  currentList.filter(
+          (shop)=> shop.startDate <= currentDateStamp && shop.endDate >= currentDateStamp)
+
+    } else {
+       filteredData  = currentList;
+    }
+    let newState = Object.assign({}, this.state);
+    newState.filteredData = filteredData;
+    this.setState(newState);
   };
 
   handleOnError = (error) => {
     let newState = Object.assign({}, this.state);
-    newState.errorMessage = error;
-    newState.open =true;
+    newState.errorMessage = error.response.data;
+    newState.open = true;
+    newState.hasResults = false;
     this.setState(newState)
   };
 
@@ -73,10 +92,21 @@ class Index extends React.Component {
     this.setState(newState)
   };
 
-  handleSelectedFile = event => {
+  handleOnData = (response) => {
+    let newState = Object.assign({}, this.state);
+    newState.data= response.data;
+    newState.filteredData = response.data;
+    newState.hasResults = true;
+    this.setState(newState)
+  };
 
+  handleSelectedFile = event => {
     let newState = Object.assign({}, this.state);
     newState.selectedFile = event.target.files[0];
+    newState.data = [];
+    newState.errorMessage = "";
+    newState.filteredData = [];
+    newState.hasResults = false;
     this.setState(newState)
   };
 
@@ -94,9 +124,8 @@ class Index extends React.Component {
         .post(endpoint, data, {
           onUploadProgress: this.handleOnProgress
         })
-        .then(res => {
-          console.log(res.statusText)
-        }).catch(this.handleOnError)
+        .then(this.handleOnData)
+        .catch(this.handleOnError)
     }
   };
 
@@ -108,13 +137,13 @@ class Index extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { open, selectedFile, errorMessage, data, filterdData } = this.state;
+    const { open, selectedFile, errorMessage, data, filteredData } = this.state;
     return (
       <div className={classes.root}>
         <Dialog open={open} onClose={this.handleClose}>
-          <DialogTitle>Error Occurred During</DialogTitle>
+          <DialogTitle>Error Occurred During File Uploading..</DialogTitle>
           <DialogContent>
-            <DialogContentText>errorMessage</DialogContentText>
+            <DialogContentText>{errorMessage}</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button color="primary" onClick={this.handleClose}>
@@ -165,11 +194,18 @@ class Index extends React.Component {
                   type="file"
                   onChange={this.handleSelectedFile}
                 />
+
                 <label htmlFor="contained-button-file">
                   <Button variant="outlined" color="primary" component="span" className={classes.button}>
                     Choose file
                   </Button>
                 </label>
+                {selectedFile
+                    ? <Typography variant="h5" >
+                      {selectedFile.name}
+                    </Typography>
+                    : null
+                }
               </Grid>
             </Grid>
             <Grid xs={12}
@@ -188,10 +224,10 @@ class Index extends React.Component {
           </Grid>
         </div>
         {
-          this.state.fileUploaded ? <Search /> : null
+          this.state.hasResults ? <Search handleOnFilter={this.handleOnFilter}/> : null
         }
         {
-          this.state.hasResults ? <Result /> : null
+          this.state.hasResults ? <Result filteredData={filteredData}/> : null
         }
       </div>
     );

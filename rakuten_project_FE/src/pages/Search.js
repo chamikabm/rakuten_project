@@ -35,7 +35,7 @@ class Index extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, handleOnFilter } = this.props;
     return (
       <div>
           <Grid container
@@ -69,7 +69,9 @@ class Index extends React.Component {
                 </MuiPickersUtilsProvider>
               </Grid>
               <Grid item>
-                <Button color={"primary"} variant="contained" className={classes.button} onClick={this.handleUpload}>
+                <Button color={"primary"} variant="contained" className={classes.button} onClick={()=>{
+                  handleOnFilter(this.state.selectedDate);
+                }}>
                   Search
                   &nbsp;<Search className={classes.rightIcon} />
                 </Button>

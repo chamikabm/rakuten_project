@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import withRoot from '../withRoot';
+import moment from 'moment';
 
 const styles = theme => ({
   paper: {
@@ -19,7 +20,7 @@ const styles = theme => ({
 
 class Index extends React.Component {
   render() {
-    const { classes } = this.props;
+    const { classes, filteredData } = this.props;
     return (
       <div>
         <Grid container
@@ -42,9 +43,23 @@ class Index extends React.Component {
           >
             <Grid item>
               <table>
-                <tr>1</tr>
-                <tr>2</tr>
-                <tr>3</tr>
+                <thead>
+                 <th>Shop ID</th>
+                 <th>Start Date</th>
+                 <th>End Date</th>
+                </thead>
+                <tbody>
+                {
+                  filteredData
+                      ? filteredData.map(shop => (
+                          <tr>
+                            <td>{shop.shopId}</td>
+                            <td>{moment(`${shop.startDate}`, "YYYYMMDD").format("DD/MM/YYYY")}</td>
+                            <td>{moment(`${shop.endDate}`, "YYYYMMDD").format("DD/MM/YYYY")}</td>
+                          </tr>))
+                      : null
+                }
+                </tbody>
               </table>
             </Grid>
           </Grid>
