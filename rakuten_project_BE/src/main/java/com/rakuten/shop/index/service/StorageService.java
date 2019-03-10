@@ -13,5 +13,4 @@ public interface StorageService {
     Path load(String filename);
 
     void deleteAll();
-
 }

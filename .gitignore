@@ -1,8 +1,10 @@
 .idea
 *.iml
 ./node_modules
-./rakuten_project_BE/.idea
-./rakuten_project_BE/*.iml
-./rakuten_project_FE/.idea
-./rakuten_project_FE/*.iml
-./rakuten_project_FE/node_modules
+rakuten_project_BE/.idea
+rakuten_project_BE/*.iml
+rakuten_project_BE/upload-dir/
+rakuten_project_BE/target
+rakuten_project_FE/.idea
+rakuten_project_FE/*.iml
+rakuten_project_FE/node_modules

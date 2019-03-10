@@ -5,7 +5,6 @@ import com.rakuten.shop.index.core.Shop;
 import java.nio.file.Path;
 import java.util.List;
 
-
 public interface ShopValidatorService {
 
     boolean validateShopOpenDuration(Shop shop);

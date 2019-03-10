@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Search from '@material-ui/icons/Search';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
+import { InlineDatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import withRoot from '../withRoot';
@@ -58,12 +58,12 @@ class Index extends React.Component {
             >
               <Grid item>
                 <MuiPickersUtilsProvider utils={MomentUtils}>
-                  <DatePicker
+                  <InlineDatePicker
+                    keyboard
+                    clearable
                     value={this.state.selectedDate}
                     onChange={this.handleDateChange}
-                    label="Date of birth"
-                    openTo="year"
-                    format={"DD/MM/YYYY"}
+                    format={"MM/DD/YYYY"}
                     views={["year", "month", "day"]}
                   />
                 </MuiPickersUtilsProvider>

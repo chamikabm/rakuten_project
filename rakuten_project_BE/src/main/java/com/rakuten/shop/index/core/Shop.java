@@ -1,6 +1,5 @@
 package com.rakuten.shop.index.core;
 
-
 import java.util.Objects;
 
 public class Shop {

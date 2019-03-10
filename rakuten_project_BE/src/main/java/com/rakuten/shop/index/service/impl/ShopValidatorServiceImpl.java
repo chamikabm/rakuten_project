@@ -17,7 +17,6 @@ import java.io.Reader;
 import java.nio.file.Path;
 import java.util.*;
 
-
 @Service
 public class ShopValidatorServiceImpl implements ShopValidatorService {
     @Override

@@ -29,7 +29,6 @@ public class FileUploadController {
         this.shopValidatorService = shopValidatorService;
     }
 
-
     @PostMapping("/upload")
     @ResponseBody
     public List<Shop> handleFileUpload(@RequestParam("file") MultipartFile file) throws Exception {
