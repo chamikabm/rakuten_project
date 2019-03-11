@@ -16,7 +16,8 @@ npm start // Frontend will be start on port localhost:3000
 
 ```$xslt
 cd rakuten_project_FE/
-mvn package && java -jar target/rakuten_project-1.0-SNAPSHOT.jar // Backend will be start on port localhost:8080
+mvn package
+mvn spring-boot:run  // Backend will be start on port localhost:8080
 ```
 ---
 Once the both frontend and backend started successfuly you can start testing the app.
